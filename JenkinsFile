@@ -1,5 +1,5 @@
 pipeline {
-    agent jenkins_slave2
+    agent any
     
     stages {
         

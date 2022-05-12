@@ -1,0 +1,30 @@
+pipeline {
+    agent jenkins_slave2
+    
+    stages {
+        
+        stage('CODE BUILD'){
+            steps {
+                echo 'Building the Code from Branch and Creating Packaged file out of that.'
+                build job: 'BUILD_JOB'
+                echo 'BUILD is DONE'
+            }
+        }
+        
+        stage ('UNIT TESTING'){
+            steps {
+                build job: 'UNIT_TESTING_JOB'
+            }
+        }
+        stage ('IMAGE GENERATION') {
+            steps {
+                build job: 'IMAGE_GENERATION_JOB'
+            }
+        }
+        stage ('PUSH IMAGE INTO AWS ECR'){
+            steps {
+                build job: 'PUSH_IMAGE_INTO_ECR'
+            }
+        }
+    }
+}

@@ -50,7 +50,7 @@ pipeline {
       steps {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-                sh 'git verion'
+                sh 'git version'
           }
         }
       }

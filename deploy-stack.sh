@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ $# -ne 3 ]; then
     echo "Enter stack name, template file name to create and region name. "
     exit 0

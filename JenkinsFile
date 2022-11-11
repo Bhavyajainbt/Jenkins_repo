@@ -51,7 +51,6 @@ pipeline {
       }
       steps {
         ansiColor('xterm') {
-          agent any
             withCredentials([[
               $class: 'AmazonWebServicesCredentialsBinding',
               credentialsId: "${aws-credentials}",

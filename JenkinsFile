@@ -50,7 +50,6 @@ pipeline {
       steps {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-                //sh 'deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}'
                 sh 'git verion'
           }
         }

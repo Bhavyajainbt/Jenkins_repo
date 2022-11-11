@@ -17,3 +17,8 @@ if [[ $PARAMETERS_FILE_NAME != *.properties ]]; then
     echo "CloudFormation parameters $PARAMETERS_FILE_NAME does not exist"
     exit 0
 fi
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --template-file $TEMPLATE_NAME \
+  --region $REGION \

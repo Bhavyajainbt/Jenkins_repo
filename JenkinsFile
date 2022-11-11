@@ -51,7 +51,7 @@ pipeline {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                 script {
-                    sh 'scripts/deplloy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}'
+                    sh 'scripts/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}'
                 }
           }
         }

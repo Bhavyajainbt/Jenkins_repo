@@ -26,7 +26,7 @@ pipeline {
   stages {
      stage('Check Version') {
         steps {
-           git version
+           sh 'git version'
         }
      }
   }

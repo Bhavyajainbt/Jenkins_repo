@@ -24,5 +24,10 @@ pipeline {
   }
   
   stages {
+     stage {
+        steps {
+           git version
+        }
+     }
   }
 }

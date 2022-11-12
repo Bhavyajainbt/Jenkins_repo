@@ -1,5 +1,11 @@
 import groovy.transform.Field
 
+@Field
+def stackName = ""
+
+@Field
+def stackTemplateFile = ""
+
 pipeline {
     agent any
     
@@ -46,10 +52,10 @@ pipeline {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
                     datas = readYaml (file: 'config.yml')
-                    sname = datas[params.ENVIRONMENT][params.REGION].SQSStackName
-                    stemplatefile = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
+                    stackName = datas[params.ENVIRONMENT][params.REGION].SQSStackName
+                    stackTemplateFile = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sregion = params.REGION
-                    sh 'scripts/deploy-stack.sh $sname $stemplatefile $sregion'
+                    sh 'scripts/deploy-stack.sh ${stackName} ${stemplatefile} ${REGION}'
              }
           }
         }

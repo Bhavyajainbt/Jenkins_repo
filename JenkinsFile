@@ -46,7 +46,7 @@ pipeline {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
                     datas = readYaml (file: 'config.yml')
-                    echo datas.${ENVIRONMENT}
+                    echo datas[params.ENVIRONMENT]
              }
           }
         }

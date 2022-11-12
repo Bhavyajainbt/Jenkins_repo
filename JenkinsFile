@@ -1,3 +1,7 @@
+def props = readProperties  file:'sqs-parameters.properties'
+def sqsStackName= props['SQSStackName']
+def sqsStackTemplateFile = props['SQSTemplateFile']
+
 pipeline {
     agent any
     
@@ -5,13 +9,14 @@ pipeline {
     choice(
       name: 'ENVIRONMENT',
       choices: [
+          '',
           'Dev',
           'Test'
           ],
       description: 'Select Stack Environment'
     )
-    string(name: 'STACK_NAME', defaultValue: 'SQS-dev-stack', description: 'Enter the CloudFormation Stack Name.')
-    string(name: 'TEMPLATE_NAME', defaultValue: 'sqs.yaml', description: 'Enter the CloudFormation Template Name (Must contain file extension type *.yaml)')
+    string(name: 'STACK_NAME', defaultValue: ${sqsStackName}-${ENVIRONMENT}, description: 'Enter the CloudFormation Stack Name.')
+    string(name: 'TEMPLATE_NAME', defaultValue: ${sqsStackTemplateFile}, description: 'Enter the CloudFormation Template Name (Must contain file extension type *.yaml)')
     choice(
       name: 'REGION',
       choices: [
@@ -59,8 +64,7 @@ pipeline {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                 script {
-                    sh "chmod +x -R ${env.WORKSPACE}"
-                    sh 'scripts/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}'
+                    sh 'echo ${STACK_NAME}'
                 }
           }
         }

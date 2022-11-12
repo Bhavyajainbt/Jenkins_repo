@@ -25,7 +25,7 @@ pipeline {
             expression { params.REFRESH == 'yes' }
         }
         steps {
-            CONFIG = readProperty(file: "config.properties")
+            CONFIG = readProperties(file: "config.properties")
             sqsStackName = CONFIG.SQSStackName
             sqsStackTemplateFile = CONFIG.SQSTemplateFile
         }

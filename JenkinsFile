@@ -52,6 +52,7 @@ pipeline {
                     sname = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     stemplatefile = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sregion = params.REGION
+                    echo ${sregion}
                     sh 'scripts/deploy-stack.sh ${sname} ${stemplatefile} ${sregion}'
              }
           }

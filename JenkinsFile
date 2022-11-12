@@ -53,9 +53,11 @@ pipeline {
             expression { params.REFRESH == 'yes' }
         }
         steps {
-           Properties config = getProps('sqs-parameters.properties')
-           sqsStackName = config.SQSStackName
-           sqsStackTemplateFile = config.SQSTemplateFile
+            node {
+                Properties config = getProps('sqs-parameters.properties')
+                sqsStackName = config.SQSStackName
+                sqsStackTemplateFile = config.SQSTemplateFile
+            }
         }
      }
      

@@ -46,13 +46,9 @@ pipeline {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
                     datas = readYaml (file: 'config.yml')
-                    echo datas[params.ENVIRONMENT][params.REGION].SQSStackName
-                    echo datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
-                    echo params.REGION
                     sname = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     stemplatefile = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sregion = params.REGION
-                    echo ${sregion}
                     sh 'scripts/deploy-stack.sh sname stemplatefile sregion'
              }
           }

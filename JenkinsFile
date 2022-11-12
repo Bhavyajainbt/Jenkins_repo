@@ -1,9 +1,6 @@
 import groovy.transform.Field
 
-@Field
 def stackName = ""
-
-@Field
 def stackTemplateFile = ""
 
 pipeline {

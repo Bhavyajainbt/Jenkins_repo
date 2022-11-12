@@ -5,9 +5,8 @@ pipeline {
     
     parameters {
         choice(name: 'REFRESH',choices: ['no','yes'],description: 'Please select refresh parameters as Yes if you want to refresh the parameters.')
-        choice(name: 'ENVIRONMENT',choices: ['','Dev','Test'],description: 'Select Stack Environment')
-        string(name: 'STACK_NAME', defaultValue: "stack-sqs-${ENVIRONMENT}", description: 'Enter the CloudFormation Stack Name.')
-        string(name: 'TEMPLATE_NAME', defaultValue: "sqs.yaml", description: 'Enter the CloudFormation Template Name (Must contain file extension type *.yaml)')
+        choice(name: 'ENVIRONMENT',choices: ['','dev','test'],description: 'Select Stack Environment')
+        choice(name: 'RESOURCE',choices: [' ','sqs','s3'],description: 'AWS Account Region')
         choice(name: 'REGION',choices: [' ','us-east-1','us-east-2'],description: 'AWS Account Region')
         choice(name: 'ACTION',choices: ['deploy-stack', 'delete-stack'],description: 'CloudFormation Actions')
         booleanParam(name: 'TOGGLE', defaultValue: false, description: 'Are you sure you want to perform this action?')
@@ -15,12 +14,8 @@ pipeline {
   
   stages {
      stage('Refresh Parameters') {
-        when {
-            expression { params.REFRESH == 'yes' }
-        }
         steps {
-            CONFIG = readYaml file: 'config.yml'
-            sh 'echo ${CONFIG[${ENVIRONMENT}][${REGION}]}'
+            sh 'git version'
         }
      }
      
@@ -42,13 +37,15 @@ pipeline {
     
      stage('stack-execution') {
       when {
-        expression { params.ACTION == 'deploy-stack'}
+        expression { params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs'}
       }
       steps {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                 script {
-                    sh 'echo ${STACK_NAME}'
+                    sh "chmod +x -R ${env.WORKSPACE}"
+                    CONFIG = readYaml(file : "config.yml")
+                    sh 'scripts/deploy-stack.sh ${CONFIG[params.ENVIRONMENT][params.REGION].SQSStackName} ${CONFIG[params.ENVIRONMENT][params.REGION].SQSTemplateFile} ${params.REGION}'
                 }
           }
         }

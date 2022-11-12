@@ -46,7 +46,7 @@ pipeline {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
                     datas = readYaml (file: 'config.yml')
-                    echo datas[params.ENVIRONMENT][params.REGION]
+                    echo datas[params.ENVIRONMENT][params.REGION].SQSStackName
              }
           }
         }

@@ -1,9 +1,9 @@
-Dev:
+dev:
   us-east-1:
     SQSStackName="stack-sqs"
     SQSTemplateFile="sqs.yaml"
 
-Test:
+test:
   us-east-2:
     SQSStackName="stack-sqs"
     SQSTemplateFile="sqs.yaml"

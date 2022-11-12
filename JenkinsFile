@@ -51,6 +51,7 @@ pipeline {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                 script {
+                    sh "chmod +x -R ${env.WORKSPACE}"
                     sh 'scripts/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}'
                 }
           }

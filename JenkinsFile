@@ -1,11 +1,8 @@
+@Field
 def sqsStackName= ''
-def sqsStackTemplateFile = ''
 
-def getProps(path) {
-    Properties props = new Properties()
-    props.load(new FileInputStream(file(path)))
-    return props
-}
+@Field
+def sqsStackTemplateFile = ''
 
 pipeline {
     agent any
@@ -26,11 +23,9 @@ pipeline {
             expression { params.REFRESH == 'yes' }
         }
         steps {
-            node {
-                Properties config = getProps('sqs-parameters.properties')
-                sqsStackName = config.SQSStackName
-                sqsStackTemplateFile = config.SQSTemplateFile
-            }
+            CONFIG = readProperty(file: "config.properties")
+            sqsStackName = CONFIG.SQSStackName
+            sqsStackTemplateFile = CONFIG.SQSTemplateFile
         }
      }
      

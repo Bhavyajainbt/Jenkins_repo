@@ -2,6 +2,14 @@ pipeline {
     agent any
     
   parameters {
+    choice(
+      name: 'Stack',
+      choices: [
+          'Dev',
+          'Test'
+          ],
+      description: 'Select Stack Environment'
+    )
     string(name: 'STACK_NAME', defaultValue: 'SQS-dev-stack', description: 'Enter the CloudFormation Stack Name.')
     string(name: 'TEMPLATE_NAME', defaultValue: 'sqs.yaml', description: 'Enter the CloudFormation Template Name (Must contain file extension type *.yaml)')
     choice(

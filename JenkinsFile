@@ -19,7 +19,7 @@ pipeline {
             expression { params.REFRESH == 'yes' }
         }
         steps {
-            CONFIG = readYaml(file: "config.yml")
+            CONFIG = readYaml file: 'config.yml'
             sh 'echo ${CONFIG[${ENVIRONMENT}][${REGION}]}'
         }
      }

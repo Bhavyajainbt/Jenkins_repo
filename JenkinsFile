@@ -49,7 +49,7 @@ pipeline {
                     sname = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     stemplatefile = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sregion = params.REGION
-                    sh 'scripts/deploy-stack.sh sname stemplatefile sregion'
+                    sh 'scripts/deploy-stack.sh $sname $stemplatefile $sregion'
              }
           }
         }

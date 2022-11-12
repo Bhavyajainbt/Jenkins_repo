@@ -40,16 +40,16 @@ pipeline {
         expression { params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs'}
       }
       
-      node {
-        def CONFIG = readYaml file: "config.yml"
-      }
       steps {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                node {
+                    def CONFIG = readYaml file: "config.yml"
+                }
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
                     sh 'echo ${CONFIG}'
-                }
+             }
           }
         }
       }

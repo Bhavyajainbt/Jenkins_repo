@@ -1,11 +1,24 @@
-def props = readProperties  file:'sqs-parameters.properties'
-def sqsStackName= props['SQSStackName']
-def sqsStackTemplateFile = props['SQSTemplateFile']
+def sqsStackName= ''
+def sqsStackTemplateFile = ''
+
+def getProps(path) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(file(path)))
+    return props
+}
 
 pipeline {
     agent any
     
   parameters {
+    choice(
+      name: 'REFRESH',
+      choices: [
+          'no',
+          'yes'
+          ],
+      description: 'Please select refresh parameters as Yes if you want to refresh the parameters.'
+    )
     choice(
       name: 'ENVIRONMENT',
       choices: [
@@ -35,11 +48,17 @@ pipeline {
   }
   
   stages {
-     stage('Check Version') {
+     stage('Refresh Parameters') {
+        when {
+            expression { params.REFRESH == 'yes' }
+        }
         steps {
-           sh 'git version'
+           Properties config = getProps('sqs-parameters.properties')
+           sqsStackName = config.SQSStackName
+           sqsStackTemplateFile = config.SQSTemplateFile
         }
      }
+     
      
      stage('action') {
        when {

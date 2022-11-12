@@ -16,7 +16,7 @@ pipeline {
       description: 'Select Stack Environment'
     )
     string(name: 'STACK_NAME', defaultValue: "${sqsStackName}-${ENVIRONMENT}", description: 'Enter the CloudFormation Stack Name.')
-    string(name: 'TEMPLATE_NAME', defaultValue: ${sqsStackTemplateFile}, description: 'Enter the CloudFormation Template Name (Must contain file extension type *.yaml)')
+    string(name: 'TEMPLATE_NAME', defaultValue: "${sqsStackTemplateFile}", description: 'Enter the CloudFormation Template Name (Must contain file extension type *.yaml)')
     choice(
       name: 'REGION',
       choices: [

@@ -43,12 +43,10 @@ pipeline {
       steps {
         ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
-                node {
-                    def CONFIG = readYaml file: "config.yml"
-                }
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
-                    sh 'echo ${CONFIG}'
+                    datas = readYaml (file: 'config.yml')
+                    echo datas.dev.toString()
              }
           }
         }

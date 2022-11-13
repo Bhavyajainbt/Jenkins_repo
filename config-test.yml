@@ -1,0 +1,4 @@
+test:
+  us-east-2:
+    SQSStackName: stack-sqs
+    SQSTemplateFile: sqs.yaml

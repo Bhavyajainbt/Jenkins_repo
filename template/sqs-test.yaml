@@ -1,0 +1,8 @@
+Resources:
+  TestInboundSQS:
+    Type: 'AWS::SQS::Queue'
+    Properties:
+      MaximumMessageSize: 2048
+      MessageRetentionPeriod: 345600
+      QueueName: "inbound-queue-dev"
+      VisibilityTimeout: 30

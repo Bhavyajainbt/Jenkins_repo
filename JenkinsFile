@@ -51,7 +51,7 @@ pipeline {
                     datas = readYaml (file: 'config.yml')
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
-                    sh "echo ${STACK_NAME}"
+                    sh "scripts/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}"
              }
           }
         }

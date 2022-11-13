@@ -48,7 +48,7 @@ pipeline {
             withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
-                    datas = readYaml (file: 'config/config-${ENVIRONMENT}.yml')
+                    datas = readYaml (file: "config/config-'${ENVIRONMENT}'.yml")
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sh "echo ${STACK_NAME}"

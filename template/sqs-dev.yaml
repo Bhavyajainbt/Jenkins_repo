@@ -1,5 +1,5 @@
 Resources:
-  TestInboundSQS:
+  DevInboundSQS:
     Type: 'AWS::SQS::Queue'
     Properties:
       MaximumMessageSize: 2048

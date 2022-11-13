@@ -1,5 +1,5 @@
 dev:
   us-east-1:
     SQSStackName: stack-sqs
-    SQSTemplateFile: sqs.yaml
+    SQSTemplateFile: sqs-dev.yaml
 

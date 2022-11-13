@@ -1,7 +1,7 @@
 import groovy.transform.Field
 
-def stackName = ""
-def stackTemplateFile = ""
+def STACK_NAME = ""
+def TEMPLATE_NAME = ""
 
 pipeline {
     agent any

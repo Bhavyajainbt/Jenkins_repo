@@ -45,7 +45,7 @@ pipeline {
       
       steps {
         ansiColor('xterm') {
-            withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+            withAWS(credentials: 'aws-credentials', region: '${REGION}') {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
                     datas = readYaml (file: "config/config-${ENVIRONMENT}.yml")

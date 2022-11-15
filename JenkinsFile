@@ -8,7 +8,7 @@ def success(){
 }
 
 def error() {
-echo "\033[1;31m[Failed to Execute] \033[0m "
+    echo "\033[1;31m[Failed to Execute] \033[0m "
 }
 
 pipeline {

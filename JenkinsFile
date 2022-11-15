@@ -7,7 +7,7 @@ def success(){
     echo "\033[1;32m[Executed Successfully] \033[0m"
 }
 
-error() {
+def error() {
 echo "\033[1;31m[Failed to Execute] \033[0m "
 }
 

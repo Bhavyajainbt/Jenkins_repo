@@ -60,7 +60,7 @@ pipeline {
       steps {
             withAWS(credentials: 'aws-credentials', region: "${REGION}") {
                 script {
-                    sh "chmo +x -R ${env.WORKSPACE}"
+                    sh "chmod +x -R ${env.WORKSPACE}"
                     datas = readYaml (file: "config/config-${ENVIRONMENT}.yml")
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile

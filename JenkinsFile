@@ -7,6 +7,10 @@ def success(){
     echo "\033[1;32m[Executed Successfully] \033[0m"
 }
 
+error() {
+echo "\033[1;31m[Failed to Execute] \033[0m "
+}
+
 pipeline {
     agent any
     
@@ -52,8 +56,10 @@ pipeline {
       steps {
             withAWS(credentials: 'aws-credentials', region: "${REGION}") {
                 script {
-                    sh "chmod +x -R ${env.WORKSPACE}"
-                    success()
+                    sh "chmo +x -R ${env.WORKSPACE}"
+                    if(currentBuild.result == 'FAILURE'){
+                        error()
+                    }
                     datas = readYaml (file: "config/config-${ENVIRONMENT}.yml")
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile

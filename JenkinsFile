@@ -74,11 +74,5 @@ pipeline {
             success {
                 success()
             }
-            unstable {
-                unstable()
-            }
-            failure {
-                error()
-            }
       }
 }

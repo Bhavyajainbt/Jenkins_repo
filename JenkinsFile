@@ -39,7 +39,7 @@ pipeline {
      }
      
      
-     stage('action') {
+     stage('Action Check') {
        when {
          expression { params.ACTION == 'deploy-stack' || params.ACTION == 'delete-stack'}
        }
@@ -52,7 +52,7 @@ pipeline {
       }
     }
     
-     stage('stack-execution') {
+     stage('Create Stack') {
       when {
         expression { params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs'}
       }
@@ -64,7 +64,7 @@ pipeline {
                     datas = readYaml (file: "config/config-${ENVIRONMENT}.yml")
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
-                    sh "echo ${TEMPLATE_NAME}"
+                    sh "scripts/deploy-stack.sh ${STACK_NAME}-'${ENVIRONMENT}' ${TEMPLATE_NAME} ${REGION}"
                     }
                 }
             }

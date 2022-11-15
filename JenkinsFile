@@ -27,7 +27,8 @@ pipeline {
     choice(name: 'ENVIRONMENT', choices: ['', 'dev', 'test'], description: 'Select Stack Environment')
     choice(name: 'RESOURCE', choices: [' ', 'sqs', 's3'], description: 'AWS Account Region')
     choice(name: 'REGION', choices: [' ', 'us-east-1', 'us-east-2'], description: 'AWS Account Region')
-    choice(name: 'ACTION', choices: ['deploy-stack', 'delete-stack'], description: 'CloudFormation Actions')
+    choice(name: 'ACTION', choices: ['deploy-stack', 'delete-stack','deploy-docker-image'], description: 'CloudFormation Actions')
+    string(name: 'IMAGE_NAME', default: '', description: 'Please enter the name of docker image you want to deploy')
     booleanParam(name: 'TOGGLE', defaultValue: false, description: 'Are you sure you want to perform this action?')
   }
 
@@ -41,7 +42,7 @@ pipeline {
     stage('Action Check') {
       when {
         expression {
-          params.ACTION == 'deploy-stack' || params.ACTION == 'delete-stack'
+          params.ACTION == 'deploy-stack' || params.ACTION == 'delete-stack' || params.ACTION == 'deploy-docker-image'
         }
       }
       steps {

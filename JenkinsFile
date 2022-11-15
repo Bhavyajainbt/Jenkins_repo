@@ -11,6 +11,10 @@ def error() {
     echo "\033[1;31m[Failed to Execute] \033[0m "
 }
 
+def unstable() {
+    echo "\033[1;33m[Unstable] \033[0m $1"
+}
+
 pipeline {
     agent any
     
@@ -68,13 +72,13 @@ pipeline {
     }
       post{
             success {
-                echo 'I succeeeded!'
+                success()
             }
             unstable {
-                echo 'I am unstable :/'
+                unstable()
             }
             failure {
-                echo 'I failed :('
+                error()
             }
       }
 }

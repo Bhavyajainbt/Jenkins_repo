@@ -57,17 +57,24 @@ pipeline {
             withAWS(credentials: 'aws-credentials', region: "${REGION}") {
                 script {
                     sh "chmo +x -R ${env.WORKSPACE}"
-                    if(currentBuild.result == 'FAILURE'){
-                        error()
-                    }
                     datas = readYaml (file: "config/config-${ENVIRONMENT}.yml")
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sh "echo ${TEMPLATE_NAME}"
-                    success()
-             }
-          }
-       }
+                    }
+                }
+            }
+        }
     }
-  }
+      post{
+            success {
+                echo 'I succeeeded!'
+            }
+            unstable {
+                echo 'I am unstable :/'
+            }
+            failure {
+                echo 'I failed :('
+            }
+      }
 }

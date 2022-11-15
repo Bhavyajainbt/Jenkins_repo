@@ -4,7 +4,7 @@ def STACK_NAME = ""
 def TEMPLATE_NAME = ""
 
 def success(){
-    echo "\033[1;32m[Success] \033[0m $1"
+    echo "\033[1;32m[Success] \033[0m"
 }
 
 pipeline {
@@ -57,7 +57,7 @@ pipeline {
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sh "echo ${TEMPLATE_NAME}"
-                    success "Great!!!" 
+                    success()
              }
           }
        }

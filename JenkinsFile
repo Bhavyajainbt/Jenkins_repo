@@ -97,7 +97,7 @@ pipeline {
         withAWS(credentials: 'aws-credentials', region: "${REGION}") {
           script {
             sh "sudo chmod +x -R ${env.WORKSPACE}"
-            sh 'docker/docker-push.sh ${IMAGE_TAG_NAME}'
+            sh 'docker/docker-push.sh ${IMAGE_NAME} ${IMAGE_TAG_NAME}'
           }
         }
       }

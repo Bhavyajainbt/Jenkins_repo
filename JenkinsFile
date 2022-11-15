@@ -44,6 +44,7 @@ pipeline {
       }
       
       steps {
+        ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: '${REGION}') {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
@@ -51,8 +52,10 @@ pipeline {
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sh "echo ${TEMPLATE_NAME}"
+                    sh "scripts/deploy-stack.sh ${STACK_NAME}-'${ENVIRONMENT}' ${TEMPLATE_NAME} ${REGION}"
              }
           }
+        }
       }
     }
   }

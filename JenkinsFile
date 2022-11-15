@@ -57,7 +57,7 @@ pipeline {
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sh "echo ${TEMPLATE_NAME}"
-                    success()
+                    success "Great!!!" 
              }
           }
        }

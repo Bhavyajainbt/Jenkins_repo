@@ -81,7 +81,7 @@ pipeline {
       }
       steps {
         script {
-          sh "chmod +x -R ${evn.WORKSPACE}"
+          sh "chmod +x -R ${env.WORKSPACE}"
           sh 'docker/docker-deploy.sh ${IMAGE_NAME}'
         }
       }

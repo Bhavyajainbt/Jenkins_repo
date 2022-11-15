@@ -3,76 +3,79 @@ import groovy.transform.Field
 def STACK_NAME = ""
 def TEMPLATE_NAME = ""
 
-def success(){
-    echo "\033[1;32m[Executed Successfully] \033[0m"
+def success() {
+  echo "\033[1;32m[Executed Successfully] \033[0m"
 }
 
 def error() {
-    echo "\033[1;31m[Failed to Execute] \033[0m "
+  echo "\033[1;31m[Failed to Execute] \033[0m "
 }
 
 def unstable() {
-    echo "\033[1;33m[Unstable] \033[0m "
+  echo "\033[1;33m[Unstable] \033[0m "
 }
 
 pipeline {
-    agent any
-    
-    options {
-        ansiColor('xterm')
-    }
-    
-    parameters {
-        choice(name: 'REFRESH',choices: ['no','yes'],description: 'Please select refresh parameters as Yes if you want to refresh the parameters.')
-        choice(name: 'ENVIRONMENT',choices: ['','dev','test'],description: 'Select Stack Environment')
-        choice(name: 'RESOURCE',choices: [' ','sqs','s3'],description: 'AWS Account Region')
-        choice(name: 'REGION',choices: [' ','us-east-1','us-east-2'],description: 'AWS Account Region')
-        choice(name: 'ACTION',choices: ['deploy-stack', 'delete-stack'],description: 'CloudFormation Actions')
-        booleanParam(name: 'TOGGLE', defaultValue: false, description: 'Are you sure you want to perform this action?')
-    }
-  
+  agent any
+
+  options {
+    ansiColor('xterm')
+  }
+
+  parameters {
+    choice(name: 'REFRESH', choices: ['no', 'yes'], description: 'Please select refresh parameters as Yes if you want to refresh the parameters.')
+    choice(name: 'ENVIRONMENT', choices: ['', 'dev', 'test'], description: 'Select Stack Environment')
+    choice(name: 'RESOURCE', choices: [' ', 'sqs', 's3'], description: 'AWS Account Region')
+    choice(name: 'REGION', choices: [' ', 'us-east-1', 'us-east-2'], description: 'AWS Account Region')
+    choice(name: 'ACTION', choices: ['deploy-stack', 'delete-stack'], description: 'CloudFormation Actions')
+    booleanParam(name: 'TOGGLE', defaultValue: false, description: 'Are you sure you want to perform this action?')
+  }
+
   stages {
-     stage('Refresh Parameters') {
-        steps {
-            sh 'git version'
-        }
-     }
-     
-     
-     stage('Action Check') {
-       when {
-         expression { params.ACTION == 'deploy-stack' || params.ACTION == 'delete-stack'}
-       }
-       steps {
-           script {
-             if (!params.TOGGLE) {
-                 currentBuild.result = 'ABORTED' //If you do not set the toggle flag to true before executing the build action, it will automatically abort the pipeline for any action.
-            } 
-         }
-      }
-    }
-    
-     stage('Create Stack') {
-      when {
-        expression { params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs'}
-      }
-      
+    stage('Refresh Parameters') {
       steps {
-            withAWS(credentials: 'aws-credentials', region: "${REGION}") {
-                script {
-                    sh "chmod +x -R ${env.WORKSPACE}"
-                    datas = readYaml (file: "config/config-${ENVIRONMENT}.yml")
-                    STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
-                    TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
-                    sh "scripts/deploy-stack.sh ${STACK_NAME}-'${ENVIRONMENT}' ${TEMPLATE_NAME} ${REGION}"
-                    }
-                }
-            }
-        }
-    }
-      post{
-            success {
-                success()
-            }
+        sh 'git version'
       }
+    }
+
+    stage('Action Check') {
+      when {
+        expression {
+          params.ACTION == 'deploy-stack' || params.ACTION == 'delete-stack'
+        }
+      }
+      steps {
+        script {
+          if (!params.TOGGLE) {
+            currentBuild.result = 'ABORTED' //If you do not set the toggle flag to true before executing the build action, it will automatically abort the pipeline for any action.
+          }
+        }
+      }
+    }
+
+    stage('Create Stack') {
+      when {
+        expression {
+          params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs'
+        }
+      }
+
+      steps {
+        withAWS(credentials: 'aws-credentials', region: "${REGION}") {
+          script {
+            sh "chmod +x -R ${env.WORKSPACE}"
+            datas = readYaml(file: "config/config-${ENVIRONMENT}.yml")
+            STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
+            TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
+            sh "scripts/deploy-stack.sh ${STACK_NAME}-'${ENVIRONMENT}' ${TEMPLATE_NAME} ${REGION}"
+          }
+        }
+      }
+    }
+  }
+  post {
+    success {
+      success()
+    }
+  }
 }

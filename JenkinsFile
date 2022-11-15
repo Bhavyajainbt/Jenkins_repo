@@ -73,6 +73,19 @@ pipeline {
         }
       }
     }
+    stage('Build Docker Image') {
+      when {
+        expression {
+          params.ACTION == 'deploy-docker-image'
+        }
+      }
+      steps {
+        script {
+          sh "chmod +x -R ${evn.WORKSPACE}"
+          sh 'docker/docker-deploy.sh ${IMAGE_NAME}'
+        }
+      }
+    }
   }
   post {
     success {

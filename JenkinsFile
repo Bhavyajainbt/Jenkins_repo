@@ -29,6 +29,7 @@ pipeline {
     choice(name: 'REGION', choices: [' ', 'us-east-1', 'us-east-2'], description: 'AWS Account Region')
     choice(name: 'ACTION', choices: ['deploy-stack', 'delete-stack','deploy-docker-image'], description: 'CloudFormation Actions')
     string(name: 'IMAGE_NAME', defaultValue: '', description: 'Please enter the name of docker image you want to deploy')
+    string(name: 'IMAGE_TAG_NAME', defaultValue: '', description: 'Please enter the tag name of docker image you want to deploy')
     booleanParam(name: 'TOGGLE', defaultValue: false, description: 'Are you sure you want to perform this action?')
   }
 
@@ -82,7 +83,22 @@ pipeline {
       steps {
         script {
           sh "sudo chmod +x -R ${env.WORKSPACE}"
-          sh 'docker/docker-deploy.sh ${IMAGE_NAME}'
+          sh 'docker/docker-build.sh ${IMAGE_NAME}'
+        }
+      }
+    }
+    stage('Push Image to AWS ECR') {
+      when {
+        expression {
+          params.ACTION == 'deploy-docker-image'
+        }
+      }
+      steps {
+        withAWS(credentials: 'aws-credentials', region: "${REGION}") {
+          script {
+            sh "sudo chmod +x -R ${env.WORKSPACE}"
+            sh 'docker/docker-push.sh ${IMAGE_TAG_NAME}'
+          }
         }
       }
     }

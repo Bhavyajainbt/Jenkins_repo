@@ -6,6 +6,10 @@ def TEMPLATE_NAME = ""
 pipeline {
     agent any
     
+    options {
+        ansiColor('xterm')
+    }
+    
     parameters {
         choice(name: 'REFRESH',choices: ['no','yes'],description: 'Please select refresh parameters as Yes if you want to refresh the parameters.')
         choice(name: 'ENVIRONMENT',choices: ['','dev','test'],description: 'Select Stack Environment')
@@ -28,13 +32,11 @@ pipeline {
          expression { params.ACTION == 'deploy-stack' || params.ACTION == 'delete-stack'}
        }
        steps {
-         ansiColor('xterm') {
            script {
              if (!params.TOGGLE) {
                  currentBuild.result = 'ABORTED' //If you do not set the toggle flag to true before executing the build action, it will automatically abort the pipeline for any action.
-             } 
-          }
-        }
+            } 
+         }
       }
     }
     
@@ -44,7 +46,6 @@ pipeline {
       }
       
       steps {
-        ansiColor('xterm') {
             withAWS(credentials: 'aws-credentials', region: '${REGION}') {
                 script {
                     sh "chmod +x -R ${env.WORKSPACE}"
@@ -52,11 +53,9 @@ pipeline {
                     STACK_NAME = datas[params.ENVIRONMENT][params.REGION].SQSStackName
                     TEMPLATE_NAME = datas[params.ENVIRONMENT][params.REGION].SQSTemplateFile
                     sh "echo ${TEMPLATE_NAME}"
-                    sh "scripts/deploy-stack.sh ${STACK_NAME}-'${ENVIRONMENT}' ${TEMPLATE_NAME} ${REGION}"
              }
           }
-        }
-      }
+       }
     }
   }
 }

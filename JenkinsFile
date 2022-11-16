@@ -60,7 +60,7 @@ pipeline {
     stage('Create Stack') {
       when {
         expression {
-          params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs'
+          params.ACTION == 'deploy-stack' && params.RESOURCE == 'sqs' && params.TOGGLE == true
         }
       }
 
@@ -79,7 +79,7 @@ pipeline {
     stage('Build Docker Image') {
       when {
         expression {
-          params.ACTION == 'deploy-docker-image'
+          params.ACTION == 'deploy-docker-image' && params.TOGGLE == true
         }
       }
       steps {
@@ -92,7 +92,7 @@ pipeline {
     stage('Push Image to AWS ECR') {
       when {
         expression {
-          params.ACTION == 'deploy-docker-image'
+          params.ACTION == 'deploy-docker-image' & params.TOGGLE == true
         }
       }
       steps {

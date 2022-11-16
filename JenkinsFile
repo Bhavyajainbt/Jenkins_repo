@@ -49,6 +49,7 @@ pipeline {
       steps {
         script {
           if (!params.TOGGLE) {
+            sh 'id'
             currentBuild.result = 'ABORTED' //If you do not set the toggle flag to true before executing the build action, it will automatically abort the pipeline for any action.
           }
         }

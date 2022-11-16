@@ -11,4 +11,3 @@ fi
 
 aws ecr-public get-login-password --region us-east-1
 echo "First is done"
-docker login --username AWS --password-stdin public.ecr.aws/f5k7w3r3

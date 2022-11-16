@@ -9,5 +9,4 @@ else
   REPOSITORY_URI="public.ecr.aws/f5k7w3r3/bhavya-repo"
 fi
 
-aws ecr-public get-login-password --region us-east-1
-echo "First is done"
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/f5k7w3r3

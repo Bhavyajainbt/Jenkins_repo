@@ -28,8 +28,9 @@ pipeline {
     choice(name: 'RESOURCE', choices: [' ', 'sqs', 's3'], description: 'AWS Account Region')
     choice(name: 'REGION', choices: [' ', 'us-east-1', 'us-east-2'], description: 'AWS Account Region')
     choice(name: 'ACTION', choices: ['deploy-stack', 'delete-stack','deploy-docker-image'], description: 'CloudFormation Actions')
-    string(name: 'IMAGE_NAME', defaultValue: 'bhavya-repo', description: 'Please enter the name of docker image you want to deploy', read-only:true)
-    string(name: 'IMAGE_TAG_NAME', defaultValue: '', description: 'Please enter the tag name of docker image you want to deploy')
+    string(name: 'IMAGE_NAME', defaultValue: 'bhavya-repo', description: 'Please enter the name of docker image you want to deploy')
+    string(name: 'IMAGE_TAG_NAME', defaultValue: 'latest', description: 'Please enter the tag name of docker image you want to deploy')
+    string(name: 'REPOSITORY_URL', defaultValue: '190698788805.dkr.ecr.us-east-1.amazonaws.com/bhavya-repo', description: 'Please enter the tag name of docker image you want to deploy')
     booleanParam(name: 'TOGGLE', defaultValue: false, description: 'Are you sure you want to perform this action?')
   }
 
@@ -98,7 +99,7 @@ pipeline {
         withAWS(credentials: 'aws-credentials', region: "${REGION}") {
           script {
             sh "sudo chmod +x -R ${env.WORKSPACE}"
-            sh 'docker/docker-push.sh ${IMAGE_NAME} ${IMAGE_TAG_NAME}'
+            sh 'docker/docker-push.sh ${IMAGE_NAME} ${IMAGE_TAG_NAME} ${REPOSITORY_URL}'
           }
         }
       }

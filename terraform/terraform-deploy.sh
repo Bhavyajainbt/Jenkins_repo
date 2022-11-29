@@ -3,6 +3,7 @@
 if [ $# -ne 1 ];then
   echo "Please select environment in which the resource has to be deployed."
   exit 0;
+fi
 env_dir=$1
 
 cd terraform/

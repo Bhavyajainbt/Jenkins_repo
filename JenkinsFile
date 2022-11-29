@@ -83,10 +83,12 @@ pipeline {
         }
       }
       
-      withAWS(credentials: 'aws-credentials', region: "${REGION}"{
-        script {
-          sh "chmod +x -R ${env.WORKSPACE}"
-          sh terraform/terraform-deploy.sh
+      steps{
+        withAWS(credentials: 'aws-credentials', region: "${REGION}"{
+          script {
+            sh "chmod +x -R ${env.WORKSPACE}"
+            sh terraform/terraform-deploy.sh
+          }
         }
       }
     }

@@ -12,5 +12,4 @@ cd ${env_dir}
 echo "Moved to sub environment directory"
 terraform init
 echo "terraform init is successful"
-#terraform apply -auto-approve
-pwd
+terraform apply -auto-approve

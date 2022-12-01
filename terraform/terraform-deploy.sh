@@ -12,4 +12,4 @@ cd ${env_dir}
 echo "Moved to sub environment directory"
 terraform init
 echo "terraform init is successful"
-terraform apply -var vpc_cidr_block="172.17.17.0/24" -auto-approve
+terraform apply -var vpc_cidr_block="172.10.0.0/16" -auto-approve

@@ -1,6 +1,5 @@
 variable "vpc_cidr_block" {
   type = string
-  default = "172.50.0.0/16"
 }
 
 variable "vpc-resource-name" {

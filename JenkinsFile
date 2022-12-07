@@ -15,6 +15,14 @@ def unstable() {
   echo "\033[1;33m[Unstable] \033[0m "
 }
 
+properties([
+    parameters([
+        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Categories', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false,
+        script:  categories]]],
+[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Items', referencedParameters: 'Categories', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: items]]]
+    ])
+])
+
 pipeline {
   agent any
 
@@ -25,7 +33,6 @@ pipeline {
   parameters {
     choice(name: 'REFRESH', choices: ['no', 'yes'], description: 'Please select refresh parameters as Yes if you want to refresh the parameters.')
     choice(name: 'ENVIRONMENT', choices: ['', 'dev', 'test'], description: 'Select Stack Environment')
-    activeChoice(name: 'ENVIRONMENT stack', choices: ['', 'dev', 'test'], description: 'Select Stack Environment')
     choice(name: 'RESOURCE', choices: [' ', 'sqs', 's3','ec2-instance','aws-vpc','aws-subnet'], description: 'AWS Account Region')
     choice(name: 'REGION', choices: [' ', 'us-east-1', 'us-east-2'], description: 'AWS Account Region')
     choice(name: 'ACTION', choices: ['deploy-stack', 'delete-stack','deploy-docker-image','terraform-provisioning','destroy-using-terraform'], description: 'CloudFormation Actions')

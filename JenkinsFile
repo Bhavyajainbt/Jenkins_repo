@@ -15,12 +15,14 @@ def unstable() {
   echo "\033[1;33m[Unstable] \033[0m "
 }
 
+List category_list = ["\"Select:selected\"","\"Vegetables\"","\"Fruits\""]
+String categories = buildScript(category_list)
+
+
 properties([
     parameters([
-        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Categories', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false,
-        script:  categories]]],
-[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Items', referencedParameters: 'Categories', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: items]]]
-    ])
+        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Categories', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], 
+        sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script:  categories]]])
 ])
 
 pipeline {

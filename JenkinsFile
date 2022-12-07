@@ -18,6 +18,9 @@ def unstable() {
 List category_list = ["\"Select:selected\"","\"Vegetables\"","\"Fruits\""]
 String categories = buildScript(category_list)
 
+String buildScript(List values){
+  return "return $values"
+}
 
 properties([
     parameters([
